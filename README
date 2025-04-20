@@ -1,0 +1,14 @@
+# Simple Screenshot Capture
+
+Minimal Electron app that captures screenshots at intervals.
+
+## Features
+- Set capture interval in seconds
+- Choose save folder
+- Start/Stop capture
+- Saves as PNG with timestamp
+
+## How to Run
+1. Clone this repo
+2. npm install
+3. npm start
