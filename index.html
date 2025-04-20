@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Screenshot Capture</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    button { padding: 8px 15px; margin: 5px; }
+    input { width: 50px; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Screenshot Capture</h1>
+  
+  <div>
+    Interval (seconds): <input type="number" id="interval" value="5">
+    <button id="folderBtn">Select Folder</button>
+    <div id="folderPath">Desktop</div>
+  </div>
+
+  <button id="startBtn">Start</button>
+  <button id="stopBtn">Stop</button>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    let folder = require('electron').remote.app.getPath('desktop');
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      const seconds = parseInt(document.getElementById('interval').value);
+      ipcRenderer.send('start-capture', { seconds, folder });
+    });
+
+    document.getElementById('stopBtn').addEventListener('click', () => {
+      ipcRenderer.send('stop-capture');
+    });
+
+    document.getElementById('folderBtn').addEventListener('click', async () => {
+      const result = await ipcRenderer.invoke('select-folder');
+      if (result.filePaths[0]) {
+        folder = result.filePaths[0];
+        document.getElementById('folderPath').textContent = folder;
+      }
+    });
+  </script>
+</body>
+</html>
